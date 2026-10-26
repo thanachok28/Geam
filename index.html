@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>นักผจญภัยตามล่าหลักฐานทางประวัติศาสตร์ | เกมการศึกษา ป.4</title>
+  <meta name="description" content="เกมการเรียนรู้ประวัติศาสตร์ ป.4 เรื่องหลักฐานชั้นต้นและหลักฐานชั้นรอง ผจญภัย 5 ด่าน ตอบคำถาม สะสมคะแนน และบันทึกผลลง Google Sheets">
+  <meta name="author" content="เกมการศึกษาประวัติศาสตร์ ป.4">
+  <meta name="theme-color" content="#3B82F6">
+
+  <!-- Favicon Emoji -->
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220%22%20width=%22100%22%20height=%22100%22><text y=%22.9em%22 font-size=%2290%22>🧭</text></svg>">
+
+  <!-- CSS Stylesheet -->
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- Floating Background Ambient Elements -->
+  <div class="bg-decorations" aria-hidden="true">
+    <div class="cloud cloud-1"></div>
+    <div class="cloud cloud-2"></div>
+    <div class="cloud cloud-3"></div>
+    <div class="sparkle sparkle-1">✨</div>
+    <div class="sparkle sparkle-2">⭐</div>
+    <div class="sparkle sparkle-3">🌟</div>
+  </div>
+
+  <!-- Confetti Canvas -->
+  <canvas id="confetti-canvas"></canvas>
+
+  <!-- Top App Navigation -->
+  <header class="app-header">
+    <div class="brand">
+      <span class="brand-icon">🧭</span>
+      <h1 class="brand-title">นักล่าหลักฐานประวัติศาสตร์</h1>
+    </div>
+    <div class="header-controls">
+      <button id="btn-sound-toggle" class="icon-btn" title="เปิด/ปิดเสียง" aria-label="เปิด/ปิดเสียง">
+        🔊
+      </button>
+      <button id="btn-info-modal" class="icon-btn" title="คู่มือความรู้ ป.4" aria-label="คู่มือความรู้">
+        📖
+      </button>
+      <button id="btn-sheets-modal" class="icon-btn" title="ตั้งค่า Google Sheets" aria-label="ตั้งค่า Google Sheets">
+        ⚙️
+      </button>
+    </div>
+  </header>
+
+  <!-- Main Game Container -->
+  <main class="main-container">
+
+    <!-- =========================================================================
+         SCREEN 1: WELCOME & PLAYER ONBOARDING
+         ========================================================================= -->
+    <section id="screen-welcome" class="game-screen active">
+      <div class="glass-card">
+        <div class="welcome-hero">
+          <div class="hero-badge">
+            <span>🎒 สาระประวัติศาสตร์ มาตรฐาน ส 4.1 ชั้น ป.4</span>
+          </div>
+          <h2 class="game-title">นักผจญภัยตามล่า<br>หลักฐานทางประวัติศาสตร์</h2>
+          <p class="game-subtitle">
+            ร่วมออกเดินทางสำรวจอดีต ค้นหาและแยกแยะหลักฐาน 5 ด่านสุดท้าทาย เพื่อสะสม 50 คะแนนเต็ม!
+          </p>
+        </div>
+
+        <!-- Learning Concept Preview -->
+        <div class="concept-preview">
+          <div class="concept-box primary">
+            <div class="concept-header">
+              <span class="concept-icon">📜</span>
+              <span class="concept-name">หลักฐานชั้นต้น (ปฐมภูมิ)</span>
+            </div>
+            <p class="concept-desc">
+              เกิดในยุคเหตุการณ์จริง หรือสร้าง/บันทึกโดย<strong>ผู้ที่อยู่ในเหตุการณ์โดยตรง</strong> เช่น จดหมายทหาร, ไดอารี่, ภาพถ่าย
+            </p>
+          </div>
+
+          <div class="concept-box secondary">
+            <div class="concept-header">
+              <span class="concept-icon">📚</span>
+              <span class="concept-name">หลักฐานชั้นรอง (ทุติยภูมิ)</span>
+            </div>
+            <p class="concept-desc">
+              ข้อมูลที่<strong>เรียบเรียงหรือวิเคราะห์ขึ้นภายหลัง</strong> โดยอาศัยหลักฐานอื่น เช่น หนังสือเรียน, ภาพยนตร์สารคดี
+            </p>
+          </div>
+        </div>
+
+        <!-- Player Setup -->
+        <div class="player-setup">
+          <div class="setup-title">🌟 เลือกตัวละครและตั้งชื่อนักสำรวจ</div>
+          
+          <div class="avatar-selector" id="avatar-selector">
+            <div class="avatar-option selected" data-avatar="boy" data-name="น้องกล้า">
+              <span class="avatar-emoji">👦</span>
+              <span class="avatar-label">น้องกล้า</span>
+            </div>
+            <div class="avatar-option" data-avatar="girl" data-name="น้องแก้ว">
+              <span class="avatar-emoji">👧</span>
+              <span class="avatar-label">น้องแก้ว</span>
+            </div>
+          </div>
+
+          <div class="name-input-group">
+            <label for="player-nickname">กรอกชื่อเล่นของนักเรียน</label>
+            <input 
+              type="text" 
+              id="player-nickname" 
+              class="name-input" 
+              placeholder="เช่น น้องภูมิ, น้องมะลิ" 
+              maxlength="20"
+              autocomplete="off"
+            >
+          </div>
+        </div>
+
+        <button id="btn-start-game" class="btn btn-primary" type="button">
+          <span>🚀 เริ่มการผจญภัย</span>
+        </button>
+      </div>
+    </section>
+
+    <!-- =========================================================================
+         SCREEN 2: ADVENTURE MAP
+         ========================================================================= -->
+    <section id="screen-map" class="game-screen">
+      <!-- Player Status Bar -->
+      <div class="map-header">
+        <div class="player-info-tag">
+          <div class="player-avatar-circle" id="map-avatar-icon">👦</div>
+          <div class="player-meta">
+            <div class="player-name-display" id="map-player-name">นักสำรวจ</div>
+            <div class="player-sub">นักสืบประวัติศาสตร์ ป.4</div>
+          </div>
+        </div>
+        <div class="score-badge-live">
+          <span>⭐ คะแนน:</span>
+          <span id="map-score-display">0</span>
+          <span>/ 50</span>
+        </div>
+      </div>
+
+      <!-- Interactive Map Card -->
+      <div class="map-canvas-card">
+        <div class="map-scenery-decor map-scenery-1">⛰️</div>
+        <div class="map-scenery-decor map-scenery-2">🌴</div>
+        <div class="map-scenery-decor map-scenery-3">🏛️</div>
+
+        <div class="map-stages-list" id="map-stages-container">
+          <!-- Connection Line Background -->
+          <div class="map-path-line"></div>
+          
+          <!-- Stages 1 to 5 dynamically generated in game.js -->
+        </div>
+      </div>
+
+      <div style="margin-top: 18px;">
+        <button id="btn-enter-active-stage" class="btn btn-primary" type="button">
+          <span>🎯 เข้าสู่ด่านปัจจุบัน</span>
+        </button>
+      </div>
+    </section>
+
+    <!-- =========================================================================
+         SCREEN 3: QUESTION & QUIZ CHALLENGE
+         ========================================================================= -->
+    <section id="screen-quiz" class="game-screen">
+      <div class="glass-card">
+        <!-- Progress Bar -->
+        <div class="stage-progress-bar-wrap">
+          <div id="quiz-progress-fill" class="stage-progress-bar-fill" style="width: 20%;"></div>
+        </div>
+
+        <!-- Quiz Top Header -->
+        <div class="stage-quiz-header">
+          <div class="stage-pill" id="quiz-stage-pill">ด่านที่ 1 / 5</div>
+          <div class="score-pill">⭐ สะสม: <span id="quiz-score-pill">0</span> คะแนน</div>
+        </div>
+
+        <!-- Question Box -->
+        <div class="question-box">
+          <div class="question-theme-icon" id="quiz-theme-icon">🛡️</div>
+          <div class="question-stage-name" id="quiz-stage-name">ด่านที่ 1: ค่ายทหารโบราณ</div>
+          <h2 class="question-text" id="quiz-question-text">
+            จดหมายที่ทหารเขียนระหว่างสงคราม จัดเป็นหลักฐานประเภทใด?
+          </h2>
+        </div>
+
+        <!-- 4 Options Grid -->
+        <div class="options-grid" id="quiz-options-container">
+          <!-- Rendered dynamically -->
+        </div>
+
+        <!-- Auxiliary Hint Section -->
+        <div class="quiz-auxiliary">
+          <button id="btn-toggle-hint" class="hint-toggle-btn" type="button">
+            <span>💡 ตัวช่วยคิด (คำใบ้)</span>
+          </button>
+        </div>
+        <div id="quiz-hint-card" class="hint-card">
+          <!-- Hint text injected dynamically -->
+        </div>
+
+        <!-- Instant Answer Feedback Box -->
+        <div id="quiz-feedback-card" class="answer-feedback-card">
+          <div class="feedback-header">
+            <span class="feedback-icon" id="feedback-icon">🎉</span>
+            <div>
+              <div class="feedback-headline" id="feedback-headline">ถูกต้องยอดเยี่ยม!</div>
+            </div>
+            <div class="feedback-points-tag" id="feedback-points-tag">+10 คะแนน</div>
+          </div>
+          <div class="feedback-explanation" id="feedback-explanation">
+            <!-- Explanation injected dynamically -->
+          </div>
+          <button id="btn-next-stage" class="btn btn-primary" type="button">
+            <span>🚀 เดินทางต่อสู่ด่านถัดไป</span>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- =========================================================================
+         SCREEN 4: GAME OVER & RESULTS
+         ========================================================================= -->
+    <section id="screen-result" class="game-screen">
+      <div class="glass-card">
+        <div class="result-hero">
+          <div class="trophy-animation" id="result-trophy">🏆</div>
+          <h2 class="result-title">การผจญภัยสิ้นสุดลงแล้ว!</h2>
+          <p id="result-player-greeting" style="color: var(--text-muted); font-size: 1.05rem; font-weight: 600;">
+            ยินดีด้วย นักสำรวจคนเก่ง
+          </p>
+        </div>
+
+        <!-- Score Banner -->
+        <div class="result-score-banner">
+          <div class="score-number-big" id="result-final-score">50</div>
+          <div class="score-max-label">เต็ม 50 คะแนน</div>
+        </div>
+
+        <!-- Evaluation Feedback Message -->
+        <div class="evaluation-card">
+          <h3 class="eval-headline" id="result-eval-headline">🌟 สุดยอดนักสืบประวัติศาสตร์ตัวจริง!</h3>
+          <p class="eval-message" id="result-eval-message">
+            ยอดเยี่ยมมากเลยคนเก่ง! แยกแยะหลักฐานชั้นต้นและหลักฐานชั้นรองได้อย่างแม่นยำ
+          </p>
+        </div>
+
+        <!-- Stat Breakdown -->
+        <div class="stat-summary-grid">
+          <div class="stat-item">
+            <div class="stat-val" id="stat-correct-count">5/5</div>
+            <div class="stat-lbl">ตอบถูกต้อง</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-val" id="stat-accuracy">100%</div>
+            <div class="stat-lbl">ความแม่นยำ</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-val" id="stat-duration">01:30</div>
+            <div class="stat-lbl">เวลาที่ใช้</div>
+          </div>
+        </div>
+
+        <!-- Google Sheets Sync Status Card -->
+        <div id="sheets-sync-card" class="sheets-sync-card status-not-configured">
+          <div class="sheets-icon" id="sheets-sync-icon">⚠️</div>
+          <div class="sheets-content">
+            <div class="sheets-title" id="sheets-sync-title">สถานะ Google Sheets: ยังไม่ได้เชื่อมต่อ</div>
+            <div class="sheets-desc" id="sheets-sync-desc">
+              ระบบจะไม่จำลองว่าบันทึกสำเร็จ เพื่อความโปร่งใส คุณครูสามารถนำ Google Apps Script Web App URL มาใส่เพื่อบันทึกข้อมูลจริง
+            </div>
+            <button id="btn-open-sheets-setup" class="sheets-action-btn" type="button">
+              ⚙️ วิธีเชื่อมต่อ Google Sheets
+            </button>
+          </div>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="result-buttons-group">
+          <button id="btn-restart-game" class="btn btn-primary" type="button">
+            <span>🔄 เล่นใหม่อีกครั้ง</span>
+          </button>
+          <button id="btn-review-answers" class="btn btn-secondary" type="button">
+            <span>📖 ดูเฉลยและทบทวน</span>
+          </button>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- =========================================================================
+       MODAL 1: ANSWER REVIEW MODAL
+       ========================================================================= -->
+  <div id="modal-review" class="modal-backdrop" role="dialog" aria-modal="true" aria-labelledby="modal-review-title">
+    <div class="modal-dialog">
+      <div class="modal-header">
+        <h3 id="modal-review-title" class="modal-title">📖 เฉลยและทบทวนความรู้ทั้ง 5 ด่าน</h3>
+        <button class="modal-close-btn" data-close-modal="modal-review" aria-label="ปิด">✕</button>
+      </div>
+      <div class="modal-body" id="review-list-container">
+        <!-- Rendered dynamically -->
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-primary" data-close-modal="modal-review" type="button">เข้าใจแล้ว ขอบคุณครับ/ค่ะ</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- =========================================================================
+       MODAL 2: LEARNING GUIDE (คู่มือนักสำรวจ ป.4)
+       ========================================================================= -->
+  <div id="modal-info" class="modal-backdrop" role="dialog" aria-modal="true" aria-labelledby="modal-info-title">
+    <div class="modal-dialog">
+      <div class="modal-header">
+        <h3 id="modal-info-title" class="modal-title">🧭 คู่มือนักสำรวจ: หลักฐานทางประวัติศาสตร์ ป.4</h3>
+        <button class="modal-close-btn" data-close-modal="modal-info" aria-label="ปิด">✕</button>
+      </div>
+      <div class="modal-body">
+        <div style="margin-bottom: 20px;">
+          <h4 style="color: #4F46E5; font-family: var(--font-heading); margin-bottom: 6px; font-size: 1.15rem;">
+            📜 1. หลักฐานชั้นต้น (ปฐมภูมิ)
+          </h4>
+          <p style="font-size: 0.95rem; margin-bottom: 8px;">
+            คือ หลักฐานที่เกิดขึ้น<strong>ร่วมสมัยกับเหตุการณ์จริง</strong> หรือถูกสร้าง/บันทึกโดย<strong>บุคคลที่อยู่ในเหตุการณ์นั้นโดยตรง</strong>
+          </p>
+          <div style="background: #EEF2FF; padding: 10px 14px; border-radius: var(--radius-sm); border-left: 4px solid #4F46E5; font-size: 0.9rem;">
+            <strong>ตัวอย่าง:</strong> จดหมายที่ทหารเขียนระหว่างสงคราม, บันทึกประจำวัน (ไดอารี่), ภาพถ่ายเหตุการณ์จริง, ศิลาจารึก, โบราณวัตถุ
+          </div>
+        </div>
+
+        <div style="margin-bottom: 20px;">
+          <h4 style="color: #D97706; font-family: var(--font-heading); margin-bottom: 6px; font-size: 1.15rem;">
+            📚 2. หลักฐานชั้นรอง (ทุติยภูมิ)
+          </h4>
+          <p style="font-size: 0.95rem; margin-bottom: 8px;">
+            คือ ข้อมูลหรือผลงานที่<strong>จัดทำหรือเรียบเรียงขึ้นภายหลังเหตุการณ์</strong> โดยนักวิชาการหรือผู้ศึกษาได้นำหลักฐานชั้นต้นมาค้นคว้า วิเคราะห์ และสรุปเป็นเรื่องราว
+          </p>
+          <div style="background: #FFFBEB; padding: 10px 14px; border-radius: var(--radius-sm); border-left: 4px solid #F59E0B; font-size: 0.9rem;">
+            <strong>ตัวอย่าง:</strong> หนังสือเรียนประวัติศาสตร์, ภาพยนตร์สารคดี, งานวิจัยประวัติศาสตร์ย้อนหลัง, นวนิยายอิงประวัติศาสตร์
+          </div>
+        </div>
+
+        <div style="background: #F0FDF4; padding: 12px 16px; border-radius: var(--radius-sm); border: 2px dashed #86EFAC; font-size: 0.92rem; color: #166534;">
+          💡 <strong>เคล็ดลับนักสืบ:</strong> ให้ถามตัวเองเสมอว่า <em>"ผู้บันทึกอยู่ในเหตุการณ์จริงตอนนั้นเลยหรือไม่?"</em> ถ้าใช่ = <strong>หลักฐานชั้นต้น</strong> แต่ถ้าเป็นการศึกษามาเรียบเรียงใหม่ภายหลัง = <strong>หลักฐานชั้นรอง</strong> จ้า!
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-primary" data-close-modal="modal-info" type="button">พร้อมลุยแล้ว!</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- =========================================================================
+       MODAL 3: GOOGLE SHEETS SETUP & DIAGNOSTICS MODAL
+       ========================================================================= -->
+  <div id="modal-sheets" class="modal-backdrop" role="dialog" aria-modal="true" aria-labelledby="modal-sheets-title">
+    <div class="modal-dialog">
+      <div class="modal-header">
+        <h3 id="modal-sheets-title" class="modal-title">⚙️ ตั้งค่าการเชื่อมต่อ Google Sheets</h3>
+        <button class="modal-close-btn" data-close-modal="modal-sheets" aria-label="ปิด">✕</button>
+      </div>
+      <div class="modal-body">
+        <div style="background: #F1F5F9; padding: 12px 14px; border-radius: var(--radius-sm); margin-bottom: 16px; font-size: 0.9rem;">
+          <div><strong>Google Sheet ID:</strong></div>
+          <code style="display: block; margin-top: 4px; word-break: break-all; color: #1E3A8A; font-weight: bold;">
+            1Jhet_jW9Hwd9BJ6FXme_8qmDbY4cuTaz4CEK1Ck59WA
+          </code>
+        </div>
+
+        <div class="setup-step">
+          <div class="step-badge">1</div>
+          <div class="step-text">
+            เปิด Google Sheets ดังกล่าว แล้วไปที่เมนู <strong>ส่วนขยาย (Extensions)</strong> &gt; <strong>Apps Script</strong>
+          </div>
+        </div>
+
+        <div class="setup-step">
+          <div class="step-badge">2</div>
+          <div class="step-text">
+            คัดลอกโค้ดจากไฟล์ <code>google-apps-script/Code.gs</code> ไปวางแทนที่โค้ดเดิมทั้งหมด แล้วกดบันทึก
+          </div>
+        </div>
+
+        <div class="setup-step">
+          <div class="step-badge">3</div>
+          <div class="step-text">
+            กดปุ่ม <strong>การทำให้ใช้งานได้ (Deploy)</strong> &gt; <strong>การทำให้ใช้งานได้รายการใหม่ (New deployment)</strong><br>
+            เลือกชนิด <strong>เว็บแอปพลิเคชัน (Web app)</strong> โดยตั้งค่าผู้มีสิทธิ์เข้าถึงเป็น <strong>ทุกคน (Anyone)</strong>
+          </div>
+        </div>
+
+        <div class="setup-step">
+          <div class="step-badge">4</div>
+          <div class="step-text">
+            คัดลอก URL ของเว็บแอป (ลงท้ายด้วย <code>/exec</code>) มากรอกลงในช่องด้านล่างนี้:
+          </div>
+        </div>
+
+        <label for="gas-url-input" class="input-label-field">Google Apps Script Web App URL:</label>
+        <input 
+          type="url" 
+          id="gas-url-input" 
+          class="text-field" 
+          placeholder="https://script.google.com/macros/s/.../exec"
+        >
+
+        <div id="gas-test-result" style="margin-top: 10px; font-size: 0.88rem; display: none;"></div>
+      </div>
+      <div class="modal-footer">
+        <button id="btn-test-save-gas" class="btn btn-primary" type="button" style="width: auto;">
+          💾 บันทึกและทดสอบเชื่อมต่อ
+        </button>
+        <button class="btn btn-secondary" data-close-modal="modal-sheets" type="button" style="width: auto;">
+          ปิด
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="js/config.js"></script>
+  <script src="js/audio.js"></script>
+  <script src="js/game.js"></script>
+
+</body>
+</html>
